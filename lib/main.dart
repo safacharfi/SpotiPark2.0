@@ -6,58 +6,56 @@ import 'package:url_strategy/url_strategy.dart';
 import 'Admin/constant/routes.dart';
 import 'Admin/providers/MetamaskProvider.dart';
 import 'User/Authentification/UserLinking.dart';
-import '/User/booking/ContractLinking.dart';
-import '/User/balance/BalanceLinking.dart' as BalanceBooking;
-import '/Admin/Parkinglot/parkinglotLinking.dart';
+import 'User/booking/ContractLinking.dart';
+import 'User/balance/BalanceLinking.dart' as BalanceBooking;
+import 'Admin/Parkinglot/parkinglotLinking.dart';
+import 'User/Car/VehiculeLinking.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'home_page.dart';
+
 
 void main() {
-  setPathUrlStrategy();
-  runApp(const MyApp());
+  runApp(const ParkieApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class ParkieApp extends StatelessWidget {
+  const ParkieApp({Key? key}); // Correction de la syntaxe ici
 
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    // return ChangeNotifierProvider(
-    //   create: (context) => LandRegisterModel(),
-    //   child: MaterialApp(
-    //     debugShowCheckedModeBanner: false,
-    //     navigatorObservers: [FlutterSmartDialog.observer],
-    //     builder: FlutterSmartDialog.init(),
-    //     home: home_page(),
-    //   ),
-    // );
-    return MultiProvider(
+    return MultiProvider( // Utilisation de MultiProvider pour plusieurs providers
       providers: [
         ChangeNotifierProvider<LandRegisterModel>(
           create: (context) => LandRegisterModel(),
         ),
-                ChangeNotifierProvider(create: (_) => UserController()),
-                                ChangeNotifierProvider(create: (_) => UserController()),
-                   ChangeNotifierProvider(create: (_) => BalanceBooking.ContractLinking()), // Utilisation de l'alias pour le package de réservation
-        ChangeNotifierProvider(create: (_) => ContractLinking()),
-                ChangeNotifierProvider(create: (_) => ParkingController()),
-
-
-
-        ChangeNotifierProvider<MetaMaskProvider>(
+        ChangeNotifierProvider<UserController>(
+          create: (_) => UserController(),
+        ),
+        ChangeNotifierProvider<BalanceBooking.ContractLinking>(
+          create: (_) => BalanceBooking.ContractLinking(),
+        ), // Utilisation de l'alias pour le package de réservation
+        ChangeNotifierProvider<ContractLinking>(
+          create: (_) => ContractLinking(),
+        ),
+        ChangeNotifierProvider<VehicleController>(
+          create: (_) => VehicleController(),
+        ),
+           ChangeNotifierProvider<MetaMaskProvider>(
           create: (context) => MetaMaskProvider()..init(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorObservers: [FlutterSmartDialog.observer],
-        builder: FlutterSmartDialog.init(),
-        initialRoute: '/',
-        onGenerateRoute: RouteGenerator.generateRoute,
-        // home: home_page(),
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (BuildContext context, Widget? child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: home_page(),
+            routes: {
+            },
+          );
+        },
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'UserLinking.dart';
 import 'Signup.dart';
 import '../home.dart'; 
 import '../dashboard.dart';
+import '/User/Car/screens/home-screen.dart';
 // Importez la page d'accueil
 
 class LoginPage extends StatefulWidget {
@@ -129,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                               // Naviguer vers la page d'accueil
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Dashboard()),
+                                MaterialPageRoute(builder: (context) => HomeScreen()),
                               );
                             } else {
                               // Afficher une alerte en cas d'échec de connexion
